@@ -2,12 +2,6 @@
 import re  # для использования регулярных выражений
 import numpy as np  # для создания матрицы
 
-corpus_ = [
-    'Crock Pot Pasta Never boil pasta again',
-    'Pasta Pomodoro Fresh ingredients Parmesan to taste'
-]
-corpus_words = []
-
 
 class CountVectorizer:
 
@@ -46,9 +40,13 @@ class CountVectorizer:
         return self.matrix
 
 
-vectorizer = CountVectorizer(corpus_)
-print(vectorizer.feature_names())
-print(vectorizer.fit_transform())
-
 if __name__ == '__main__':
-    CountVectorizer(corpus_)
+    corpus_ = [
+        'Crock Pot Pasta Never boil pasta again',
+        'Pasta Pomodoro Fresh ingredients Parmesan to taste'
+    ]
+    corpus_words = []  # складываем сюда разделенные слова
+
+    vectorizer = CountVectorizer(corpus_)
+    print(vectorizer.feature_names())
+    print(vectorizer.fit_transform())
