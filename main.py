@@ -6,16 +6,18 @@ import numpy as np  # для создания матрицы
 class CountVectorizer:
 
     def __init__(self, corpus):
+
+        self.corpus_words = []  # складываем сюда разделенные слова
         # разделяем предложения на слова
         for i in corpus:
             splitted_words = re.split('[^A-Za-z]+', i.lower().strip())
-            corpus_words.append(splitted_words)
+            self.corpus_words.append(splitted_words)
 
         self.words = {}
         index = 0
 
         # Создаем словарь, в котором уникальные слова предложений – ключи, а их номер – значение
-        for i in corpus_words:
+        for i in self.corpus_words:
             for sent in i:
                 if sent not in self.words:
                     self.words[sent] = index
@@ -29,7 +31,7 @@ class CountVectorizer:
 
         # заполняем матрицу нужными значениями
         for i in range(num_sentences):
-            cur_word = corpus_words[i]
+            cur_word = self.corpus_words[i]
             for w in cur_word:
                 self.matrix[i][self.words[w]] += 1
 
@@ -45,7 +47,6 @@ if __name__ == '__main__':
         'Crock Pot Pasta Never boil pasta again',
         'Pasta Pomodoro Fresh ingredients Parmesan to taste'
     ]
-    corpus_words = []  # складываем сюда разделенные слова
 
     vectorizer = CountVectorizer(corpus_)
     print(vectorizer.feature_names())
