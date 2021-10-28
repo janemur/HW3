@@ -1,6 +1,5 @@
 # импорт библиотек
 import re  # для использования регулярных выражений
-import numpy as np  # для создания матрицы
 
 
 class CountVectorizer:
@@ -31,7 +30,10 @@ class CountVectorizer:
         num_sentences = len(corpus)
 
         # создаем пустую матрицу размером кол-во предложений, на кол-во уникальных слов
-        self.matrix = np.zeros((num_sentences, num_words))
+        self.matrix = []
+
+        for i in range(num_sentences):
+            self.matrix.append([0] * num_words)
 
         # заполняем матрицу нужными значениями
         for i in range(num_sentences):
