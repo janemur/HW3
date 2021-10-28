@@ -3,20 +3,24 @@ import re  # для использования регулярных выраже
 
 
 class CountVectorizer:
-
     """ Класс CountVectorizer берет на вход лист с текстовыми значениями (предложениями) и выводит уникальные слова в
     этих предложениях и матрицу из каких слов состоит предложение и как часто они там встречаеются
     """
 
-    def __init__(self, corpus):
-
+    def __init__(self):
+        self.matrix = []  # матрица значений
         self.corpus_words = []  # складываем сюда разделенные слова
+        self.words = {}  # будут хранится уникальные слова
+
+    def fit_transform(self, corpus):
+        """ Выводит матрицу со значениями, как часто каждое слово из словаря встречается в данном предложении,
+        если слово отсутсвует ставится 0 """
+
         # разделяем предложения на слова
         for i in corpus:
             splitted_words = re.split('[^A-Za-z]+', i.lower().strip())
             self.corpus_words.append(splitted_words)
 
-        self.words = {}
         index = 0
 
         # Создаем словарь, в котором уникальные слова предложений – ключи, а их номер – значение
@@ -29,8 +33,7 @@ class CountVectorizer:
         num_words = len(self.words)
         num_sentences = len(corpus)
 
-        # создаем пустую матрицу размером кол-во предложений, на кол-во уникальных слов
-        self.matrix = []
+        # Заполняем матрицу нулевыми значениями
 
         for i in range(num_sentences):
             self.matrix.append([0] * num_words)
@@ -41,14 +44,11 @@ class CountVectorizer:
             for w in cur_word:
                 self.matrix[i][self.words[w]] += 1
 
+        return self.matrix
+
     def feature_names(self):
         """ Выводит ключи словаря, они же -- уникальные слова, которые встречаются во всех данных предложениях"""
         return list(self.words.keys())
-
-    def fit_transform(self):
-        """ Выводт матрицу со значениями, как часто каждое слово из словаря встречается в данном предложении,
-        если слово отсутсвует ставится 0 """
-        return self.matrix
 
 
 if __name__ == '__main__':
@@ -57,6 +57,6 @@ if __name__ == '__main__':
         'Pasta Pomodoro Fresh ingredients Parmesan to taste'
     ]
 
-    vectorizer = CountVectorizer(corpus_)
+    vectorizer = CountVectorizer()
+    print(vectorizer.fit_transform(corpus_))
     print(vectorizer.feature_names())
-    print(vectorizer.fit_transform())
